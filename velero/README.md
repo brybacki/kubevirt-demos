@@ -15,14 +15,15 @@ TODO: try using *Ceph Object Gateway*
 TODO: try using restic and csi
 
 ## DEMO time
-0. Install the kubevirt-velero-plugin
+
+### 0. Install the kubevirt-velero-plugin
 ```bash
 ./velero plugin add quay.io/brybacki/kubevirt-velero-plugin:0.46
 sleep 15
 ./velero plugin get
 ```
 
-1. Create some vms
+### 1. Create some vms
 
 ```bash
 oc create namespace demo
@@ -38,23 +39,22 @@ virtctl console vm-demo-cirros -n demo
 After login add a file.
 `echo "a change to test velero backups" >> test_file.txt`
  
-TODO: describe what is that
-2. Backup
+### 2. Backup
 
 `./velero backup create demobackup1 --include-namespaces demo --wait`
 
-3. Destroy something
+### 3. Destroy something
 
 `k delete vm -n demo`
 
 Try to login, to find a vm a dv or a pvc
 `virtctl console vm-demo-cirros -n demo`
 
-4. Restore
+### 4. Restore
  
 `./velero restore create --from-backup demobackup1 --wait`
 
-5. Login and check the file
+### 5. Login and check the file
 
 ```bash 
 virtctl console vm-demo-cirros -n demo
