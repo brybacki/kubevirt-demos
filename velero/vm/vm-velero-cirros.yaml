@@ -1,0 +1,72 @@
+kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha3
+metadata:
+  name: vm-demo-cirros
+spec:
+  running: false
+  template:
+    metadata:
+      name: vm-demo-cirros
+      labels:
+        name: vm-demo-cirros
+        #velero.io/exclude-from-backup: "true"
+    spec:
+      domain:
+        resources:
+          requests:
+            memory: 512M
+        machine:
+          type: ''
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: cirros-volume
+          - disk:
+              bus: virtio
+            name: blankdisk1
+          interfaces:
+          - name: default
+            masquerade: {}
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: cirros-os-dv
+        name: cirros-volume
+      - dataVolume:
+          name: blank1
+        name: blankdisk1
+      networks:
+      - name: default
+        pod: {}
+  dataVolumeTemplates:
+  - metadata:
+      name: blank1
+    spec:
+      source:
+        blank: { }
+      pvc:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+  - metadata:
+      name: cirros-os-dv
+      #labels:
+      #  velero.io/exclude-from-backup: "true"
+    spec:
+      source:
+        http:
+#          url: "https://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img"
+          url: "https://download.cirros-cloud.net/0.5.2/cirros-0.5.2-x86_64-disk.img"
+#          url: "http://192.168.8.3:9777/cirros-0.5.2-x86_64-disk.img"
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 256Mi
+        storageClassName: rook-ceph-block
+        #storageClassName: local
+
