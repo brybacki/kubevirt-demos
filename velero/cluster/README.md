@@ -13,7 +13,7 @@ sudo install crc /usr/local/bin
 
 Run [01_install_crc](01_install_crc.sh) script:
 
-`bash 01_install_crc.sh`
+`./01_install_crc.sh`
 
 ```bash
 eval $(crc oc-env)
@@ -27,7 +27,7 @@ OCS available from operator hub (on CRC) has to big requirements so we just inst
 
 Run [02_install_storage](02_install_storage.sh) script:
 
-`bash 02_install_storage.sh`
+`./02_install_storage.sh`
 
 ## 3. Install kubevirt and cdi
 CNV available from operator hub (on CRC) is to old. Need higher version.
@@ -35,13 +35,11 @@ CNV available from operator hub (on CRC) is to old. Need higher version.
 Run [03a_install_kubevirt](03a_install_kubevirt.sh) and [03b_install_cdi](03b_install_cdi.sh) scripts:
 
 ```bash 
-bash 03a_install_kubevirt.sh
-bash 03b_install_cdi.sh
+./03a_install_kubevirt.sh
+./03b_install_cdi.sh
 ```
 
 ## 4. Backup location - Minio
-
-TODO: try using *Ceph Object Gateway*
 
 Minio can be started inside the cluster or outside. 
 I choose outside, so I can have a restore to new cluster, 
@@ -54,4 +52,12 @@ wget https://dl.min.io/client/mc/release/linux-amd64/mc
 chmod +x mc
 ./mc config host add velero http://localhost:9000 minio minio123 ; ./mc mb -p velero/velero
 ```
+
+Now you have to get the ip of the machine where the minio is installed. It is needed for next step. 
+
+## 5. Velero
+
+Run [05_install_velero](05_install_velero.sh) script, substitute `<IP_OF_MINIO>` with correct ip address.
+
+`export MINIO_URL=http://<IP_OF_MINIO>:9000 ./05_install_velero.sh`
 

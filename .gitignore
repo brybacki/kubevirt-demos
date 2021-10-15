@@ -15,3 +15,5 @@
 # vendor/
 /velero/cluster/mc
 /velero/cluster/minio-data/
+/velero/cluster/velero-*
+/velero/cluster/velero-*/
