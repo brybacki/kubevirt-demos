@@ -108,3 +108,5 @@ spec:
 ## DEMO time
 
 ### 1. Create some vms
+oc create -f vm-velero-cirros.yaml -n backup-demo
+./velero backup create backup5 --include-resources vm --include-namespaces backup-demo -n openshift-adp
