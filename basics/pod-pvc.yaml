@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-block-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Block
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-pv-pod2
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: my-block-pvc
+  containers:
+    - name: task-pv-container
+      image: quay.io/centos/centos:stream8
+      command: ["/bin/sh"]
+      args: ["-c", "touch /pvc"]
+      volumeDevices:
+        - devicePath: "/pvc"
+          name: task-pv-storage
