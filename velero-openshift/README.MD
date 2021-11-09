@@ -21,9 +21,8 @@ Get storage class:
 ocs-storagecluster-ceph-rgw   openshift-storage.ceph.rook.io/bucket   Delete          Immediate              false                  10d
 ```
 Create a bucket using the storage class:
-```
-cat bucket.yaml
-
+`cat bucket.yaml`
+```yaml
 apiVersion: objectbucket.io/v1alpha1
 kind: ObjectBucketClaim
 metadata:
@@ -32,9 +31,9 @@ metadata:
 spec:
   generateBucketName: backup
   storageClassName: ocs-storagecluster-ceph-rgw
-
-oc create -f  bucket.yaml
 ```
+`oc create -f  bucket.yaml`
+
 
 When bucket claim is bound, a bucket and a secret are created (secret has the same name as bucket claim). 
 Now get the real bucket name **<BUCKET_NAME>** and credentials. Save credentials in the file.
@@ -105,8 +104,51 @@ spec:
 
 ### 4. Get velero CLI 
 
+`wget ...`
+
+--------
+
 ## DEMO time
 
 ### 1. Create some vms
-oc create -f vm-velero-cirros.yaml -n backup-demo
-./velero backup create backup5 --include-resources vm --include-namespaces backup-demo -n openshift-adp
+`oc create -f vm-velero-cirros.yaml -n backup-demo`
+
+### 2. Backup
+```yaml
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  namespace: openshift-adp
+  name: backupdemo-1
+spec:
+  includedNamespaces:
+    - backup-demo
+```
+
+`oc apply -f backup.yaml`
+
+`oc get backup -n openshift-adp`
+
+or
+`./velero backup create backup10 --include-namespaces backup-demo -n openshift-adp`
+
+### 3. Delete the application
+`oc delete project backup-demo`
+`oc get all -n backup-demo`
+
+### 4. Restore 
+
+```yaml
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  namespace: openshift-adp
+  name: restoredemo1-1
+spec:
+  backupName: backupdemo-1
+  includeNamespaces:
+    - backup-demo
+```
+
+`oc apply -f restore.yaml`
+`oc get restore -n openshift-adp`
