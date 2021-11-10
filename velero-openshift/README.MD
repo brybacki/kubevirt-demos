@@ -151,4 +151,8 @@ spec:
 ```
 
 `oc apply -f restore.yaml`
+
 `oc get restore -n openshift-adp`
+
+or 
+`./velero restore create restore10 --from-backup backupdemo-1 -n openshift-adp --wait`
