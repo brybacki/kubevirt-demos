@@ -119,7 +119,7 @@ apiVersion: velero.io/v1
 kind: Backup
 metadata:
   namespace: openshift-adp
-  name: backupdemo-1
+  name: demo01
 spec:
   includedNamespaces:
     - backup-demo
@@ -130,7 +130,7 @@ spec:
 `oc get backup -n openshift-adp`
 
 or
-`./velero backup create backup10 --include-namespaces backup-demo -n openshift-adp`
+`./velero backup create demo01 --include-namespaces backup-demo -n openshift-adp --wait`
 
 ### 3. Delete the application
 `oc delete project backup-demo`
@@ -143,9 +143,9 @@ apiVersion: velero.io/v1
 kind: Restore
 metadata:
   namespace: openshift-adp
-  name: restoredemo1-1
+  name: demo01
 spec:
-  backupName: backupdemo-1
+  backupName: demo01
   includeNamespaces:
     - backup-demo
 ```
@@ -155,4 +155,4 @@ spec:
 `oc get restore -n openshift-adp`
 
 or 
-`./velero restore create restore10 --from-backup backupdemo-1 -n openshift-adp --wait`
+`./velero restore create demo01 --from-backup demo01 -n openshift-adp --wait`
