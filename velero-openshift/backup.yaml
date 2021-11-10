@@ -1,0 +1,8 @@
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  namespace: openshift-adp
+  name: demo01
+spec:
+  includedNamespaces:
+    - backup-demo
