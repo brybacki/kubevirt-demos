@@ -156,3 +156,9 @@ spec:
 
 or 
 `./velero restore create demo01 --from-backup demo01 -n openshift-adp --wait`
+
+# Notes:
+Some other grat blogs:
+
+- https://cloud.redhat.com/blog/how-to-backup-and-restore-stateful-applications-on-openshift-using-oadp-and-odf?hs_preview=XiuVZSOi-71523814225
+- https://cloud.redhat.com/blog/disaster-recovery-of-virtual-machines-within-openshift?hs_preview=zGOlIgRz-82911842941
